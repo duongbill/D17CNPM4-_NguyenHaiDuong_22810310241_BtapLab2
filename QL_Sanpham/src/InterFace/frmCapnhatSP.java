@@ -1,0 +1,579 @@
+ /*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package InterFace;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Proccess.Sanpham;
+import java.awt.event.ItemEvent;
+import  java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+public class frmCapnhatSP extends javax.swing.JFrame {
+
+    
+
+    private final Sanpham sp = new Sanpham();
+    private boolean cothem = true;
+    private final DefaultTableModel tableModel = new DefaultTableModel();
+
+    // Hàm đổ dữ liệu vào ComboBox
+    public final void ShowDataCombo() {
+        ResultSet result = null;
+        try {
+            result = sp.ShowLoaiSP();
+            while (result.next()) {
+                cboLoaiSP.addItem(result.getString("Maloai"));
+            }
+        } catch (SQLException e) {
+            // In ra lỗi nếu có
+            
+        } finally {
+            // Đóng ResultSet khi hoàn thành để tránh rò rỉ tài nguyên
+            try {
+                if (result != null) result.close();
+            } catch (SQLException ex) {
+                // In ra lỗi nếu không đóng được ResultSet
+                
+            }
+        }
+    }
+
+    // Hiển thị tên loại theo mã loại trong ComboBox
+    public void ShowTenloai(String ma) throws SQLException {
+        ResultSet result = sp.ShowLoaiSP(ma);
+        if (result.next()) { // Nếu còn đọc tiếp được một dòng dữ liệu
+            txtTenloai.setText(result.getString("Tenloai"));
+        }
+    }
+
+    public final void ShowData() throws SQLException {
+        ResultSet result = null;
+        try {
+            result = sp.ShowSanpham();
+            ClearData();
+            while (result.next()) {
+                String[] rows = new String[4];
+                rows[0] = result.getString(1); // Mã sản phẩm
+                rows[1] = result.getString(2); // Tên sản phẩm
+                rows[2] = result.getString(3); // Giá bán
+                rows[3] = result.getString(5); // Mã loại
+                tableModel.addRow(rows);
+            }
+        } catch (SQLException e) {
+            // In ra lỗi nếu có
+            
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    // In ra lỗi nếu không đóng được ResultSet
+                    
+                }
+            }
+        }
+    }
+
+    private void someMethod() {
+        try {
+            ShowData(); // Gọi ShowData
+        } catch (SQLException e) { // Xử lý ngoại lệ
+            // Xử lý ngoại lệ
+            JOptionPane.showMessageDialog(this, "Lỗi khi hiển thị dữ liệu: " + e.getMessage());
+        }
+    }
+
+    // Hàm xóa dữ liệu trong tableModel
+    public void ClearData() {
+       DefaultTableModel model = (DefaultTableModel) JtableLoaiSP.getModel();
+    model.setRowCount(0);  // Xóa tất cả dữ liệu trong bảng
+       }
+    
+
+    // Hàm xóa trống các TextField
+    private void setNull() {
+        // Xóa trống các JTextField
+        txtMaSP.setText(null);
+        txtMaSP.requestFocus();
+        txtTenSP.setText(null);
+        txtGiaban.setText(null);
+        txtTenloai.setText(null);
+    }
+
+    // Hàm khóa các TextField
+    private void setKhoa(boolean a) {
+        // Khóa hoặc mở khóa cho các JTextField
+        txtMaSP.setEnabled(!a);
+        txtTenSP.setEnabled(!a);
+        txtGiaban.setEnabled(!a);
+        cboLoaiSP.setEnabled(!a);
+        txtTenloai.setEnabled(!a);
+    }
+
+    // Hàm khóa các Button
+    private void setButton(boolean a) {
+        // Vô hiệu hoặc có hiệu lực cho các JButton
+        btThem.setEnabled(a);
+        btXoa.setEnabled(a);
+        btSua.setEnabled(a);
+        btLuu.setEnabled(!a);
+        btKLuu.setEnabled(!a);
+        btThoat.setEnabled(a);
+    }
+
+  
+    
+  
+    public frmCapnhatSP() throws SQLException{
+       try {
+            initComponents();
+        
+       
+        String[] colsName = {"Mã SP", "Tên sản phẩm", "Giá bán", "Mã loại"};
+        tableModel.setColumnIdentifiers(colsName); // Đặt tiêu đề cột cho tableModel
+        JtableLoaiSP.setModel(tableModel);         // Kết nối JTable với tableModel
+
+       ShowData();
+
+        // Hiển thị dữ liệu vào JComboBox (giả định là bạn có một JComboBox tên là jComboBoxLoaiSP)
+        ShowDataCombo();
+
+        // Gọi hàm xóa trắng các TextField
+        setNull();
+
+        // Gọi hàm khóa các TextField
+        setKhoa(true);
+
+        // Gọi hàm để quản lý trạng thái các nút
+        setButton(true); // 
+       }catch (SQLException e){
+           
+       }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel2 = new javax.swing.JLabel();
+        btSua = new javax.swing.JButton();
+        txtMaSP = new javax.swing.JTextField();
+        btLuu = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        btThoat = new javax.swing.JButton();
+        txtGiaban = new javax.swing.JTextField();
+        btKLuu = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        JtableLoaiSP = new javax.swing.JTable();
+        txtTenSP = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        cboLoaiSP = new javax.swing.JComboBox<>();
+        txtTenloai = new javax.swing.JTextField();
+        btThem = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        btXoa = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel2.setText("Mã SP: ");
+
+        btSua.setText("Sửa");
+        btSua.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btSuaMouseClicked(evt);
+            }
+        });
+
+        txtMaSP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaSPActionPerformed(evt);
+            }
+        });
+
+        btLuu.setText("Lưu");
+        btLuu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btLuuMouseClicked(evt);
+            }
+        });
+
+        jLabel3.setText("Giá bán: ");
+
+        btThoat.setText("Thoát");
+        btThoat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btThoatMouseClicked(evt);
+            }
+        });
+
+        txtGiaban.setToolTipText("");
+        txtGiaban.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGiabanActionPerformed(evt);
+            }
+        });
+
+        btKLuu.setText("K Lưu");
+        btKLuu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btKLuuMouseClicked(evt);
+            }
+        });
+
+        jLabel4.setText("Tên sản phẩm: ");
+
+        JtableLoaiSP.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Mã SP", "Tên Sản Phẩm", "Đơn giá", "Loại SP"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        JtableLoaiSP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JtableLoaiSPMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(JtableLoaiSP);
+
+        txtTenSP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTenSPActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Loại SP: ");
+
+        cboLoaiSP.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboLoaiSPItemStateChanged(evt);
+            }
+        });
+
+        btThem.setText("Thêm");
+        btThem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btThemMouseClicked(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setText("QUẢN LÝ DANH MỤC SẢN PHẨM");
+
+        btXoa.setText("Xóa");
+        btXoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btXoaMouseClicked(evt);
+            }
+        });
+        btXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btXoaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(16, 16, 16)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(26, 26, 26)
+                                    .addComponent(txtGiaban))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(33, 33, 33)
+                                    .addComponent(txtMaSP, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(30, 30, 30)
+                                    .addComponent(cboLoaiSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(40, 40, 40)
+                                    .addComponent(txtTenloai, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtTenSP, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btThem)
+                                .addGap(18, 18, 18)
+                                .addComponent(btXoa)
+                                .addGap(18, 18, 18)
+                                .addComponent(btSua)
+                                .addGap(28, 28, 28)
+                                .addComponent(btLuu)
+                                .addGap(26, 26, 26)
+                                .addComponent(btKLuu)
+                                .addGap(18, 18, 18)
+                                .addComponent(btThoat))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
+                        .addGap(94, 94, 94)))
+                .addGap(100, 100, 100))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addComponent(jLabel1)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtMaSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtTenSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtGiaban, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(cboLoaiSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTenloai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btThem)
+                    .addComponent(btXoa)
+                    .addComponent(btSua)
+                    .addComponent(btLuu)
+                    .addComponent(btThoat)
+                    .addComponent(btKLuu))
+                .addGap(48, 48, 48)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSuaMouseClicked
+ String ml = txtMaSP.getText();
+    if (ml.length() == 0) { // Nếu chưa chọn Mã sản phẩm
+        JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm cần sửa", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    } else {
+        setKhoa(false); // Mở khóa các trường TextField
+        setButton(false); // Khóa các nút Button
+        cothem = false; // Gán cothem = false để ghi nhận trạng thái là sửa
+    }
+    }//GEN-LAST:event_btSuaMouseClicked
+
+    private void txtMaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaSPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaSPActionPerformed
+
+    private void btLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btLuuMouseClicked
+         String ma = txtMaSP.getText();
+    String ten = txtTenSP.getText();
+    int gia;
+
+    try {
+        gia = Integer.parseInt(txtGiaban.getText()); // Chuyển đổi giá sang kiểu int
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Giá sản phẩm không hợp lệ. Vui lòng nhập lại.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        return; // Thoát hàm nếu không thể chuyển đổi giá
+    }
+
+    String loai = cboLoaiSP.getSelectedItem().toString();
+    
+    if (ma.length() == 0 || ten.length() == 0) {
+        JOptionPane.showMessageDialog(null, "Vui lòng nhập Mã SP và Tên SP", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    } else if (ma.length() > 4 || ten.length() > 30) {
+        JOptionPane.showMessageDialog(null, "Mã SP chỉ được tối đa 4 ký tự, Tên SP tối đa 30 ký tự", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    } else {
+        try {
+            if (cothem) { // Lưu cho thêm mới
+                sp.InsertSanpham(ma, ten, gia, loai);
+            } else { // Lưu cho sửa
+                sp.EditSanpham(ma, ten, gia, loai);
+            }
+            ClearData(); // Gọi hàm xóa dữ liệu trong tableModel
+            ShowData(); // Đổ lại dữ liệu vào Table Model
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Cập nhật thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        setNull();
+        setKhoa(true);
+        setButton(true);
+    }
+    }//GEN-LAST:event_btLuuMouseClicked
+
+    private void btThoatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btThoatMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_btThoatMouseClicked
+
+    private void txtGiabanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiabanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGiabanActionPerformed
+
+    private void btKLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btKLuuMouseClicked
+        setNull();
+        setKhoa(true);
+        setButton(true);
+    }//GEN-LAST:event_btKLuuMouseClicked
+
+    private void JtableLoaiSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtableLoaiSPMouseClicked
+                // TODO add your handling code here:
+            // Hiển thị dữ liệu lên các JTextField khi click chuột vào JTable
+            try {
+                // Lấy chỉ số dòng đang chọn
+                int row = JtableLoaiSP.getSelectedRow();
+                String ma = (JtableLoaiSP.getModel().getValueAt(row, 0)).toString();
+            
+                // Gọi hàm lấy dữ liệu theo mã sản phẩm
+                ResultSet rs = sp.ShowSPTheoma(ma);
+                if (rs.next()) { // Nếu có dữ liệu
+                        txtMaSP.setText(rs.getString("MaSP"));
+                        txtTenSP.setText(rs.getString("TenSP"));
+                        txtGiaban.setText(rs.getString("Dongia"));
+                        cboLoaiSP.setSelectedItem(rs.getString("Maloai"));
+                        txtTenloai.setText(rs.getString("Tenloai"));
+                    }
+            } catch (SQLException e) {
+                // In ra lỗi nếu có
+                
+            }
+    }//GEN-LAST:event_JtableLoaiSPMouseClicked
+
+    private void txtTenSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenSPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTenSPActionPerformed
+
+    private void btThemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btThemMouseClicked
+        setNull(); // Xóa trắng các trường TextField
+    setKhoa(false); // Mở khóa các trường TextField
+    setButton(false); // Khóa các nút Button
+    cothem = true; // Gán cothem = true để ghi nhận trạng thái thêm mới
+    }//GEN-LAST:event_btThemMouseClicked
+
+    private void btXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btXoaMouseClicked
+                    String ma = txtMaSP.getText();
+             try {
+                     if (ma.length() == 0) {
+                             JOptionPane.showMessageDialog(null, "Cần chọn 1 SP để xóa", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                         } else {
+                             int confirm = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa sản phẩm " + ma + " này hay không?", "Thông báo", JOptionPane.YES_NO_OPTION);
+                             if (confirm == JOptionPane.YES_OPTION) {
+                                     sp.DeleteSanpham(ma); // Gọi hàm xóa dữ liệu theo mã sản phẩm
+                                     ClearData(); // Xóa dữ liệu trong tableModel
+                                     ShowData(); // Đưa dữ liệu vào tableModel
+                                     setNull(); // Xóa trắng các TextField
+                                 }
+                         }
+                 } catch (SQLException ex) {
+                  
+                 }
+    }//GEN-LAST:event_btXoaMouseClicked
+
+    private void btXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btXoaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btXoaActionPerformed
+
+    private void cboLoaiSPItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboLoaiSPItemStateChanged
+      // Kiểm tra trạng thái của sự kiện
+    if (evt.getStateChange() == ItemEvent.SELECTED) {
+        try {
+            // Lấy loại sản phẩm được chọn
+            String ml = cboLoaiSP.getSelectedItem().toString();
+            // Gọi hàm để hiển thị tên loại sản phẩm tương ứng
+            ShowTenloai(ml);
+        } catch (SQLException ex) {
+            // Ghi lại lỗi nếu có ngoại lệ xảy ra
+         
+            JOptionPane.showMessageDialog(null, "Lỗi khi tải thông tin loại sản phẩm.", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_cboLoaiSPItemStateChanged
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(frmCapnhatSP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(frmCapnhatSP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(frmCapnhatSP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(frmCapnhatSP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new frmCapnhatSP().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmCapnhatSP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable JtableLoaiSP;
+    private javax.swing.JButton btKLuu;
+    private javax.swing.JButton btLuu;
+    private javax.swing.JButton btSua;
+    private javax.swing.JButton btThem;
+    private javax.swing.JButton btThoat;
+    private javax.swing.JButton btXoa;
+    private javax.swing.JComboBox<String> cboLoaiSP;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField txtGiaban;
+    private javax.swing.JTextField txtMaSP;
+    private javax.swing.JTextField txtTenSP;
+    private javax.swing.JTextField txtTenloai;
+    // End of variables declaration//GEN-END:variables
+}
